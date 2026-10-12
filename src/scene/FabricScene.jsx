@@ -155,18 +155,47 @@ function StudioScene({ params, color, view, resetSignal }) {
   );
 }
 
+class SceneErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error) {
+    console.error('3D preview could not load:', error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="scene-fallback">
+          <strong>ไม่สามารถเปิดภาพตัวอย่าง 3D ได้</strong>
+          <span>ตรวจสอบ WebGL หรือเปิดด้วยเบราว์เซอร์รุ่นล่าสุด ส่วนคำนวณปริมาณผ้ายังใช้งานได้ตามปกติ</span>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function FabricScene({ params, color = '#f4f7ff', view = 'perspective', resetSignal = 0 }) {
   return (
-    <Canvas
-      shadows
-      dpr={[1, 1.7]}
-      camera={{ position: [3, 4, 8], fov: 47, near: 0.05, far: 250 }}
-      gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      fallback={<div className="scene-fallback">เบราว์เซอร์นี้ไม่รองรับ WebGL กรุณาเปิดด้วย Chrome หรือ Safari เวอร์ชันล่าสุด</div>}
-    >
-      <Suspense fallback={null}>
-        <StudioScene params={params} color={color} view={view} resetSignal={resetSignal} />
-      </Suspense>
-    </Canvas>
+    <SceneErrorBoundary key={params.kind}>
+      <Canvas
+        shadows
+        dpr={[1, 1.7]}
+        camera={{ position: [3, 4, 8], fov: 47, near: 0.05, far: 250 }}
+        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        fallback={<div className="scene-fallback">เบราว์เซอร์นี้ไม่รองรับ WebGL กรุณาเปิดด้วย Chrome หรือ Safari เวอร์ชันล่าสุด</div>}
+      >
+        <Suspense fallback={null}>
+          <StudioScene params={params} color={color} view={view} resetSignal={resetSignal} />
+        </Suspense>
+      </Canvas>
+    </SceneErrorBoundary>
   );
 }

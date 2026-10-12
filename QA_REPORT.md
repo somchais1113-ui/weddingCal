@@ -27,3 +27,13 @@ Date: 2026-10-12
 7. Adjust seam/waste percentage; verify theoretical length is unchanged and recommended length updates.
 8. Export CSV and JSON; reload them in other tools; test local history persistence.
 9. Verify the layout at 390 px mobile, tablet, and wide desktop widths.
+
+## GitHub Pages deployment patch (Phase 1.0.1)
+
+- Added `.github/workflows/deploy.yml`: install dependencies, run smoke + Vitest, compile Vite project, publish `dist` via official GitHub Pages Actions.
+- Added `DEPLOY_GITHUB_TH.md` with Thai instructions, GitHub Pages Actions source selection, and troubleshooting for 404 / blank page.
+- Added `public/.nojekyll` to keep GitHub Pages static publishing straightforward.
+- Added `SceneErrorBoundary` around the WebGL preview, so renderer failures do not crash the calculation panel.
+- Protected browser `localStorage` writes so disabled storage does not abort the entire React app.
+- Confirmed `npm run test:smoke` passes after patch.
+- Live GitHub URL and npm/Vitest production build are still **not yet verified** because no published URL was supplied and package registry connectivity is unavailable in this environment.

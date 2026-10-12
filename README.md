@@ -27,19 +27,19 @@ npm run preview
 
 The production output lives in `dist/` and can be deployed on any static host. The Vite `base` is `./` so asset URLs work under a GitHub Pages repository subpath.
 
-## Deploy to GitHub Pages
+## Deploy to GitHub Pages (recommended: no terminal)
 
-1. Push this project to a GitHub repository.
-2. Create a `gh-pages` branch by running:
+This package includes `.github/workflows/deploy.yml` to automatically install, test, build, and deploy the site via GitHub Actions on pushes to `main` or `master`.
 
-   ```bash
-   npm run deploy
-   ```
+1. Unzip and upload **all project files, including the hidden `.github/` folder**, to the **repository root** (not a nested folder).
+2. Commit to `main` or `master`.
+3. Open **Repository → Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
+4. Open **Actions → Deploy Wedding Fabric Calculator** and wait for the `build` and `deploy` jobs to succeed. If no run is visible, use **Run workflow**.
+5. Open the published URL shown in GitHub Settings → Pages.
 
-3. In GitHub, open **Settings → Pages → Build and deployment**. Choose **Deploy from a branch**, `gh-pages`, and `/(root)`.
-4. Wait for GitHub Pages to finish, then open `https://<username>.github.io/<repository>/`.
+Do **not** publish the raw `main` branch with the `/(root)` option; raw Vite/React source is not a deployable static website. Pages must host the compiled `dist/` output. See [DEPLOY_GITHUB_TH.md](./DEPLOY_GITHUB_TH.md) for a detailed Thai walkthrough and troubleshooting guide.
 
-Deployment requires Git credentials/access to the repository. Do not put secret API tokens in this app; it needs none.
+Advanced/manual deploy remains available with `npm run deploy` using a `gh-pages` branch if you know the required Git permissions and deployment setup. **Choose one deployment method, not both.**
 
 ## Project structure
 

@@ -34,6 +34,14 @@ function readStored(key, fallback) {
   }
 }
 
+function persistStored(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Storage may be disabled (private browsing or embedded previews).
+  }
+}
+
 function NumberField({ label, value, unit = 'ซม.', step = 1, min = 0, max, help, onChange }) {
   return (
     <label className="field">
@@ -76,10 +84,10 @@ export default function App() {
   const [projectName, setProjectName] = useState(() => readStored('wfc_project_v1', 'Wedding Fabric Project'));
   const item = drafts[type] ?? DEFAULT_ITEMS[type];
 
-  useEffect(() => { localStorage.setItem('wfc_drafts_v1', JSON.stringify(drafts)); }, [drafts]);
-  useEffect(() => { localStorage.setItem('wfc_color_v1', JSON.stringify(fabricColor)); }, [fabricColor]);
-  useEffect(() => { localStorage.setItem('wfc_history_v1', JSON.stringify(history)); }, [history]);
-  useEffect(() => { localStorage.setItem('wfc_project_v1', JSON.stringify(projectName)); }, [projectName]);
+  useEffect(() => { persistStored('wfc_drafts_v1', drafts); }, [drafts]);
+  useEffect(() => { persistStored('wfc_color_v1', fabricColor); }, [fabricColor]);
+  useEffect(() => { persistStored('wfc_history_v1', history); }, [history]);
+  useEffect(() => { persistStored('wfc_project_v1', projectName); }, [projectName]);
   useEffect(() => {
     if (!notice) return undefined;
     const timeout = setTimeout(() => setNotice(''), 3200);
